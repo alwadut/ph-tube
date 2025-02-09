@@ -12,18 +12,18 @@ const loadCatagory = async () => {
   const url = "https://openapi.programming-hero.com/api/phero-tube/categories";
   const res = await fetch(url);
   const data = await res.json();
-  console.log(data);
+  // console.log(data);
   const showCatagory = displayCatagory(data.categories);
-  console.log(showCatagory);
+  // console.log(showCatagory);
 };
 
-const loadVideo = async () => {
-  const url = "https://openapi.programming-hero.com/api/phero-tube/videos";
+const loadVideo = async ( searchText ) => {
+  const url = `https://openapi.programming-hero.com/api/phero-tube/videos?titel=${searchText}`;
   const res = await fetch(url);
   const data = await res.json();
   console.log(data);
   const showVideo = displayVideo(data.videos);
-  console.log(showVideo);
+  // console.log(showVideo);
 };
 
 function timeString(time){
@@ -37,15 +37,61 @@ function timeString(time){
   return `${year}y ${days} d ${hour}h ${minutes}m ${seconds}s`;
 }
 
-const loadCatagoryVideo = async (id) => {
-  const url = `https://openapi.programming-hero.com/api/phero-tube/category/${id}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  console.log(data);
-  displayVideo(data.category);
+const removeActiveClass = () => {
+  const buttons = document.getElementsByClassName("cetegory-btn");
+  // console.log(buttons);
+  for(let btn of buttons ){
+    btn.classList.remove("active");
+  }
+  return;
 }
 
+const loadCatagoryVideo =(id)=> {
+  fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
+  .then(res => res.json())
+  .then((data )=> {
+    // sob  active class remove koro 
+    removeActiveClass();
 
+    // id class active koro 
+    const activeBtn = document.getElementById(`btn-${id}`);
+    activeBtn.classList.add("active");
+    displayVideo(data.category);
+    
+  
+  })
+  .catch(err => {
+    console.log(err);
+  });
+ 
+}
+
+const videoDetails = async (video_id) => {
+  // console.log(video_id);
+  const url = `https://openapi.programming-hero.com/api/phero-tube/video/${video_id}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  displayDetails(data.video);
+}
+const displayDetails = (video) => {
+  const modal = document.getElementById("video-details")
+  modal.innerHTML = `
+    <img src="${video.thumbnail}"/>
+    <div>
+      <h3 class="font-bold"> 
+        ${video.title}
+      </h3>
+      <p>
+        ${video.description}
+      </p>
+    </div>
+
+    
+    `
+    
+
+  document.getElementById("my_modal_5").showModal()
+};
 
 // {
 //     "category_id": "1001",
@@ -76,9 +122,10 @@ const displayVideo = (videos) => {
     <img  src="/icon.png"/>
     <h1 class="text-3xl font-bold"> Ops sorry No video is found </h1>
     </div>`;
+    return;
   }
 else{
-  videocontainer.innerHTML = ``;
+  videocontainer.classList.add("grid");
 }
   videos.forEach((video) => {
     console.log(video);
@@ -105,11 +152,18 @@ else{
           video.authors[0].verified === true ? `<img class="w-5" src="/image.png"/>` : ""
         }
     </div>
-        <p> </p>
+        <button class="btn btn-primary" onclick="videoDetails('${video.video_id}')">
+          Details
+        </button>
     </div>
        
     </div>
-    </div> `;
+    </div> `
+    
+    ;
+
+
+    
     videocontainer.appendChild(card);
   });
 };
@@ -125,17 +179,26 @@ const displayCatagory = (catagories) => {
   const catagoryContainer = document.getElementById("catagories");
 
   catagories.forEach((item) => {
-    console.log(item);
+    // console.log(item);
 
     const buttonContainer = document.createElement("div");
     buttonContainer.innerHTML = `
-    <button onclick="loadCatagoryVideo(${item.category_id})" class="btn">${item.category}
+    <button id="btn-${item.category_id}" onclick="loadCatagoryVideo(${item.category_id})" class="btn cetegory-btn">${item.category}
     </button>
     `;
-    
 
     catagoryContainer.appendChild(buttonContainer);
   });
 };
+
+
+document.getElementById("Search").addEventListener("keyup",(e)=>{
+  loadVideo(e.target.value);
+});
+
+
+
+
+
 loadCatagory();
 loadVideo();

@@ -7,6 +7,7 @@
     <title>ph tube</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/style.css">
 
 </head>
 
@@ -16,7 +17,7 @@
             <div class="logo w-[100px] shadow-lg">
                 <img src="/Logo.png" alt="">
             </div>
-            <label class="input input-bordered flex items-center gap-2">
+            <label id="Search" class="input input-bordered flex items-center gap-2">
                 <input type="text" class="grow" placeholder="Search" />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -36,13 +37,29 @@
         </nav>
     </header>
     
+                <!-- Open the modal using ID.showModal() method -->
+            <button id="showDatails" class="btn hidden" onclick="my_modal_5.showModal()">open modal</button>
+            <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box">
+               <div id="video-details">
+
+
+               </div>
+                <div class="modal-action">
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button class="btn">Close</button>
+                </form>
+                </div>
+            </div>
+            </dialog>
     
             <nav id="catagories" class="py-4 flex justify-center mx-auto gap-4 ">
     
                 
             </nav>
             <main>
-                <section id="video" class="w-11/12 mx-auto grid grid-col-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <section id="video" class="w-11/12 mx-auto grid grid-col-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     
                         
                     
@@ -50,6 +67,7 @@
                  
             </main>
     <script src="/js/video.js"></script>
+    
 </body>
 
 </html>
