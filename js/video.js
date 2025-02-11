@@ -17,13 +17,13 @@ const loadCatagory = async () => {
   // console.log(showCatagory);
 };
 
-const loadVideo = async ( searchText ) => {
+const loadVideo = async ( searchText="" ) => {
   const url = `https://openapi.programming-hero.com/api/phero-tube/videos?titel=${searchText}`;
   const res = await fetch(url);
   const data = await res.json();
   console.log(data);
   const showVideo = displayVideo(data.videos);
-  // console.log(showVideo);
+  console.log(showVideo);
 };
 
 function timeString(time){
